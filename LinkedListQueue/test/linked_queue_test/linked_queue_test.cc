@@ -1,20 +1,6 @@
 #include "LinkedList.h"
 #include <gtest/gtest.h>
 
-template <typename T>
-class LinkedListTest : public ::testing::Test {
- protected:
-   struct Node {
-        Node* next;
-        Node* prev;
-        T data;
-    };
-
-   void SetUp() override;
-
-   void TearDown() override;
-};
-
 TEST (LinkedListTest, GetEmptyAndAppend) {
   LinkedList<int> list;
   
