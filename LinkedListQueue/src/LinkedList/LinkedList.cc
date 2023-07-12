@@ -106,8 +106,16 @@ std::size_t LinkedList<T>::GetSize() const {
 }
 
 template <typename T>
-typename LinkedList<T>::Node* LinkedList<T>::GetHeadPtr() const {
-  return head_;
+typename LinkedList<T>::Node* LinkedList<T>::GetPosition(const T& value) const {
+  Node* current = head_;
+  while (current->data_ != value && current != nullptr) {
+    current = current->next_;
+  }
+  if (current == nullptr) {
+    return nullptr;
+  } else if (current->data_ == value) {
+    return current;
+  }
 }
 
 template class LinkedList<int>;

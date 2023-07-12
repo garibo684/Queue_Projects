@@ -26,7 +26,7 @@ class LinkedList {
     const T& GetTail() const;
     bool GetEmpty() const;
     std::size_t GetSize() const;
-    Node* GetHeadPtr() const;
+    Node* GetPosition(const T& value) const;
 
  private:
     Node* head_;
