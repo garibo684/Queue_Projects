@@ -1,4 +1,5 @@
 #include "LinkedList.h"
+#include <iostream>
 
 template <typename T>
 LinkedList<T>::LinkedList() : head_(nullptr), tail_(nullptr), size_(0) {}
@@ -118,4 +119,15 @@ typename LinkedList<T>::Node* LinkedList<T>::GetPosition(const T& value) const {
   }
 }
 
+template <typename T>
+void LinkedList<T>::GetList() const {
+  Node* current = head_;
+
+  std::cout << "\nList: ";
+  while (current != nullptr) {
+    std::cout << " - " << current->data_;
+    current = current->next_;
+  }
+  std::cout << " -\n" << std::endl;
+}
 template class LinkedList<int>;

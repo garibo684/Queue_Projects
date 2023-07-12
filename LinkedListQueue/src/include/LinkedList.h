@@ -22,6 +22,7 @@ class LinkedList {
     void Insert(Node* prev_node, const T& value);
     void Delete();
     void Clear();
+    void GetList() const;
     const T& GetHead() const;
     const T& GetTail() const;
     bool GetEmpty() const;

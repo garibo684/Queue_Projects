@@ -13,6 +13,8 @@ int main() {
   list.Insert(list.GetPosition(5), 10);
   std::cout << "---Insert(10) After Head" << std::endl;
 
+  list.GetList();
+
   std::cout << "-Size: " << list.GetSize() << "  Head Value: " << list.GetHead() << "  Tail Value: " << list.GetTail() << std::endl;
 
   list.Delete();
@@ -25,6 +27,9 @@ int main() {
 
  list.Append(50);
   std::cout << "\n---Append(50)" << std::endl;
+
+  list.GetList();
+
   std::cout << "-Is Empty: " << list.GetEmpty() << std::endl;
 
   list.Clear();
