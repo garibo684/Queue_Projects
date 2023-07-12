@@ -77,9 +77,9 @@ void LinkedList<T>::Delete() {
       size_ = 0;
     } 
     else if (size_ > 1) {
-      tail_ = tail_->prev_;
-      delete tail_->next_;
-      tail_->next_ = nullptr;
+      head_ = head_->next_;
+      delete head_->prev_;
+      head_->prev_ = nullptr;
       size_--;
     }
     else {return;}
