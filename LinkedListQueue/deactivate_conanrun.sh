@@ -1,1 +1,0 @@
-. "/home/garibo684/Projects/Internship/Learning/Queue_Tests/LinkedListQueue/deactivate_conanrunenv-release-x86_64.sh"
