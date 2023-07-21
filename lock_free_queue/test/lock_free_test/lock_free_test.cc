@@ -23,6 +23,28 @@ TEST(LockFreeQueueTest, PopFromEmptyQueue) {
   std::shared_ptr<int> value = queue.pop();
   EXPECT_TRUE(value == nullptr);
 }
+TEST(LockFreeQueueTest, Alternative) {
+  LockFreeQueue<int> queue;
+
+  queue.push(1);
+  queue.push(2);
+  queue.push(3);
+
+  std::shared_ptr<int> value1 = queue.pop();
+  ASSERT_TRUE(value1 != nullptr);
+  EXPECT_EQ(*value1, 1);
+
+  std::shared_ptr<int> value2 = queue.pop();
+  ASSERT_TRUE(value2 != nullptr);
+  EXPECT_EQ(*value2, 2);
+
+  std::shared_ptr<int> value3 = queue.pop();
+  ASSERT_TRUE(value3 != nullptr);
+  EXPECT_EQ(*value3, 3);
+
+  std::shared_ptr<int> value4 = queue.pop();
+  ASSERT_TRUE(value4 == nullptr);
+}
 
 int main(int argc, char** argv) {
   ::testing::InitGoogleTest(&argc, argv);
