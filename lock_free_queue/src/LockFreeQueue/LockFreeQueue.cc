@@ -18,33 +18,52 @@ void LockFreeQueue<T>::push(const T& data) {
   std::unique_ptr<Node> new_node(new Node(data));
   Node* new_tail = new_node.get();
   Node* old_tail = tail_.load();
+  Node* null_ptr = nullptr;
 
-  if (head_.load() == nullptr) {
-    head_.store(new_tail);
-    tail_.store(new_tail);
-  } else {
-      old_tail->next_.store(new_tail);
-      tail_.compare_exchange_weak(old_tail, new_tail);
+  while (head_.load() == nullptr && tail_.load() == nullptr) {
+    tail_.compare_exchange_weak(null_ptr, new_tail);
+    head_.compare_exchange_weak(null_ptr, new_tail);
   }
+
+  while (true) {
+    if (tail_.compare_exchange_weak(old_tail, new_tail)) {
+      old_tail->next_.store(new_tail);
+      break;
+    }
+    old_tail = tail_.load();
+  }
+
   new_node.release();
 }
 
 template <typename T>
 std::shared_ptr<T> LockFreeQueue<T>::pop() {
-  Node* old_head = head_.load();
-    if (old_head == nullptr) {
-      return std::shared_ptr<T>();
-    } else {
+  while (true) {
+    if (head_.load() != nullptr) {
+      Node* old_head = head_.load();
+
       if (old_head->next_ != nullptr) {
-          head_.compare_exchange_weak(old_head, old_head->next_);
+        Node* next_node = old_head->next_.load();
+
+        if (head_.compare_exchange_weak(old_head, next_node)) {
+          std::shared_ptr<T> res(old_head->data_);
+          delete old_head;
+          return res;
+        }
+        old_head = head_.load();
+
       } else {
-          head_.store(nullptr);
-          tail_.store(nullptr);
+          if (head_.compare_exchange_weak(old_head, nullptr)) {
+            tail_.compare_exchange_weak(old_head, nullptr);
+            std::shared_ptr<T> res(old_head->data_);
+            delete old_head;
+            return res;
           }
-    std::shared_ptr<T> res(old_head->data_);
-    delete old_head;
-    return res;
-    }
+          old_head = head_.load();
+      }
+
+    } else { return std::shared_ptr<T>(); }
+  }
 }
 
 template class LockFreeQueue<int>;

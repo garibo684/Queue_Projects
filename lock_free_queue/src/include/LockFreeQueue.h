@@ -10,7 +10,7 @@ class LockFreeQueue {
    struct Node {
      std::shared_ptr<T> data_;
      std::atomic<Node*> next_;
-     Node(const T& data) : data_(std::make_shared<T>(data)) {}
+     Node(const T& data) : data_(std::make_shared<T>(data)), next_(nullptr) {}
    };
    std::atomic<Node*> head_;
    std::atomic<Node*> tail_;
